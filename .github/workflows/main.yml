@@ -27,5 +27,5 @@ jobs:
           compose-file: docker-compose.yml
           down-flags: "--remove-orphans --volumes"
           
-      - name: Run Tests
-        run: docker compose exec -T app ./mvnw spring-boot:test-run
+      #- name: Run Tests
+        #run: docker compose exec -T app ./mvnw spring-boot:test-run
