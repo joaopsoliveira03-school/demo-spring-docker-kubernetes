@@ -1,0 +1,31 @@
+name: Integration Tests
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Docker Compose Action
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: docker-compose.yml
+          down-flags: "--remove-orphans --volumes"
+          
+      - name: Run Tests
+        run: docker compose exec -T app ./mvnw spring-boot:test-run
